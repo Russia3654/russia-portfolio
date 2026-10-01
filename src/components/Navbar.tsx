@@ -33,7 +33,6 @@ export default function Navbar() {
                     <li><Link href="/" className="relative text-gray-300 hover:text-white after:content-[''] after:block after:w-0 after:h-[2px] after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full">Home</Link></li>
                     <li><Link href="/projects" className="relative text-gray-300 hover:text-white after:content-[''] after:block after:w-0 after:h-0.5 after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full">Projects</Link></li>
                     <li><Link href="/about" className="relative text-gray-300 hover:text-white after:content-[''] after:block after:w-0 after:h-0.5 after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full">About</Link></li>
-                    <li><Link href="/contact" className="relative text-gray-300 hover:text-white after:content-[''] after:block after:w-0 after:h-0.5 after:bg-purple-500 after:transition-all after:duration-300 hover:after:w-full">Contact</Link></li>
                 </ul>
             </div>
             {open && (
@@ -41,7 +40,6 @@ export default function Navbar() {
                     <Link href="/">Home</Link>
                     <Link href="/projects">Projects</Link>
                     <Link href="/about">About</Link>
-                    <Link href="/contact">Contact</Link>
                 </div>)}
         </nav>
     );
