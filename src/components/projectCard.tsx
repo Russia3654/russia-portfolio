@@ -1,14 +1,17 @@
 interface ProjectCardProps {
     title: string;
+    type: string;
+    language: string;
     description: string;
     link?: string;
 }
 
-export default function ProjectCard({ title, description, link }: ProjectCardProps) {
+export default function ProjectCard({ title, type, language, description, link }: ProjectCardProps) {
 
     return (
         <div className="bg-gray-800 rounded-lg p-6 shadow-md hover:shadow-xl transition">
             <h3 className="text-xl font-bold text-purple-300 mb-4">{title}</h3>
+            <h4 className="text-sm font-bold text-purple-300 mb-4">{type} / {language}</h4>
             <p className="text-gray-300 mb-4">{description}</p>
             {link
                 ? (

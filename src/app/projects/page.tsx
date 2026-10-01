@@ -13,6 +13,8 @@ export default function ProjectsPage() {
                         <ProjectCard
                             key={index}
                             title={project.title}
+                            type={project.type}
+                            language={project.language}
                             description={project.description}
                             link={project.link}
                         />

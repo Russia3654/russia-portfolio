@@ -1,0 +1,26 @@
+"use client";
+
+import { ReactNode } from "react";
+
+interface ModalProps {
+    isOpen: boolean;
+    onClose: () => void;
+    title: string;
+    children: ReactNode;
+}
+
+export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+    if (!isOpen) return null;
+
+    return (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div className="bg-gray-900 text-white rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 p-6">
+                <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-2xl font-bold text-purple-400">{title}</h2>
+                    <button onClick={onClose} className="text-gray-400 hover:text-white">✕</button>
+                </div>
+                <div>{children}</div>
+            </div>
+        </div>
+    );
+}
