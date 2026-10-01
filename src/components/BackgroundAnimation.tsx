@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from "react";
 
+type Ripple = {
+    x: number;
+    y: number;
+    radius: number;
+    alpha: number;
+    color: string;
+};
 
 export default function BackgroundAnimation() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -10,8 +17,8 @@ export default function BackgroundAnimation() {
         const canvas = canvasRef.current!;
         const ctx = canvas.getContext("2d")!;
         let particles: Particle[] = [];
-        let ripples: unknown[] = [];
-        let mouse = { x: null as number | null, y: null as number | null };
+        let ripples: Ripple[] = [];
+        const mouse = { x: null as number | null, y: null as number | null };
 
         const PARTICLE_COUNT = 200;
         const COLORS = ["rgba(168,85,247,0.12)", "rgba(192,132,252,0.3)", "#d946ef", "#f0abfc", "#a855f7"];
@@ -48,7 +55,7 @@ export default function BackgroundAnimation() {
              * velocity and the position of the mouse.
              */
             update() {
-                if (mouse.x !== null) {
+                if (mouse.x !== null && mouse.y !== null) {
                     const dx = this.x - mouse.x;
                     const dy = this.y - mouse.y;
                     const dist = Math.sqrt(dx * dx + dy * dy);
@@ -111,7 +118,7 @@ export default function BackgroundAnimation() {
          * execute the rest of the code inside the function.
          */
         function drawCursorGlow() {
-            if (mouse.x === null) return;
+            if (mouse.x === null || mouse.y === null) return;
             const gradient = ctx.createRadialGradient(mouse.x, mouse.y, 0, mouse.x, mouse.y, 40);
             gradient.addColorStop(0, "rgba(168,85,247,0.25)");
             gradient.addColorStop(0.5, "rgba(192,132,252,0.15)");
@@ -165,16 +172,16 @@ export default function BackgroundAnimation() {
             animate();
         }
 
-        window.addEventListener("resize", resizeCanvas);
-        window.addEventListener("mousemove", e => {
+        function handleResize() { resizeCanvas(); }
+        function handleMouseMove(e: MouseEvent) {
             mouse.x = e.clientX;
             mouse.y = e.clientY;
-        });
-        window.addEventListener("mouseleave", () => {
+        }
+        function handleMouseLeave() {
             mouse.x = null;
             mouse.y = null;
-        });
-        window.addEventListener("touchstart", e => {
+        }
+        function handleTouchStart(e: TouchEvent) {
             const touch = e.touches[0];
             ripples.push({
                 x: touch.clientX,
@@ -183,15 +190,20 @@ export default function BackgroundAnimation() {
                 alpha: 0.8,
                 color: COLORS[Math.floor(Math.random() * COLORS.length)]
             });
-        })
+        }
+
+        window.addEventListener("resize", handleResize);
+        window.addEventListener("mousemove", handleMouseMove);
+        window.addEventListener("mouseleave", handleMouseLeave);
+        window.addEventListener("touchstart", handleTouchStart);
 
         initParticles();
 
         return () => {
-            window.removeEventListener("resize", resizeCanvas);
-            window.removeEventListener("mousemove", () => { });
-            window.removeEventListener("mouseleave", () => { });
-            window.removeEventListener("touchstart", () => { });
+            window.removeEventListener("resize", handleResize);
+            window.removeEventListener("mousemove", handleMouseMove);
+            window.removeEventListener("mouseleave", handleMouseLeave);
+            window.removeEventListener("touchstart", handleTouchStart);
         };
     }, []);
 
